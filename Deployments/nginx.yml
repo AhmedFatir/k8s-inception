@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      initContainers:
+      - name: generate-certificates
+        image: nginx:latest
+        command: ["openssl", "req", "-x509", "-nodes", "-days", "365", "-newkey", "rsa:2048",
+                  "-keyout", "/etc/nginx/certs/tls.key",
+                  "-out", "/etc/nginx/certs/tls.crt",
+                  "-subj", "/CN=localhost"]
+        volumeMounts:
+        - name: nginx-certificates
+          mountPath: /etc/nginx/certs
+      containers:
+      - name: nginx
+        image: nginx:latest
+        volumeMounts:
+        - name: nginx-config
+          mountPath: /etc/nginx/conf.d
+        - name: nginx-certificates
+          mountPath: /etc/nginx/certs
+        ports:
+        - containerPort: 80
+        - containerPort: 443
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: nginx-config
+      - name: nginx-certificates
+        persistentVolumeClaim:
+          claimName: nginx-certificates-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+spec:
+  selector:
+    app: nginx
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  - name: https
+    port: 443
+    targetPort: 443
+  type: LoadBalancer
