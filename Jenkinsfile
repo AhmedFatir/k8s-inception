@@ -6,9 +6,6 @@ pipeline {
         OKE_CLUSTER_NAME = 'DevOps_Cluster'
         OKE_COMPARTMENT_NAME = 'OKE'
     }
-    triggers {
-        githubPush()
-    }
     stages {
         stage('Checkout') {
             steps {
