@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         KUBECONFIG = '/var/jenkins_home/.kube/config'
-        OCI_CREDENTIALS = 'oci-credentials' // ID of your OCI credentials in Jenkins
+        OCI_CREDENTIALS = 'oci-credentials'
         OKE_CLUSTER_NAME = 'DevOps_Cluster'
         OKE_COMPARTMENT_NAME = 'OKE'
     }
@@ -12,34 +12,19 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/AhmedFatir/k8s-inception', branch: 'main'
+                withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
+                    git url: 'https://github.com/AhmedFatir/k8s-inception', branch: 'main', credentialsId: 'github-token'
+                }
             }
         }
-        stage('Deploy to OKE') {
+        stage('Apply K8s Manifests') {
             steps {
-                withCredentials([string(credentialsId: OCI_CREDENTIALS, variable: 'OCI_CREDENTIALS')]) {
-                    try {
-                        sh '''
-                          echo "Deploying to OKE Cluster: ${OKE_CLUSTER_NAME} in Compartment: ${OKE_COMPARTMENT_NAME}"
-                          kubectl apply -f k8s_manifests/
-                        '''
-                    } catch (Exception e) {
-                        echo "Deployment failed: ${e.getMessage()}"
-                        currentBuild.result = 'FAILURE'
-                        throw e
-                    }
-                }
+                sh 'kubectl apply -Rf k8s/'
             }
         }
         stage('Verify Deployment') {
             steps {
-                try {
-                    sh 'kubectl get pods -A && kubectl get svc -A'
-                } catch (Exception e) {
-                    echo "Verification failed: ${e.getMessage()}"
-                    currentBuild.result = 'FAILURE'
-                    throw e
-                }
+                sh 'kubectl get pods -A && kubectl get svc -A'
             }
         }
     }
