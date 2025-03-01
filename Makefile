@@ -1,7 +1,7 @@
 all:
-	kubectl apply -f Env -f Volumes -f Deployments
+	kubectl apply -Rf ./k8s
 
 clean:
-	kubectl delete -f Deployments -f Volumes -f Env
+	kubectl delete -Rf ./k8s
 
 re: clean all
