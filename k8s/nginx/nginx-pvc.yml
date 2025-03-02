@@ -3,8 +3,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: nginx-certificates-pvc
 spec:
+  storageClassName: "oci-bv"
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 50Gi

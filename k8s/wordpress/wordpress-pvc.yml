@@ -3,8 +3,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: wordpress-pvc
 spec:
+  storageClassName: "oci-bv"
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 20Gi
+      storage: 50Gi
