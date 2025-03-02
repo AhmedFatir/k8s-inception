@@ -66,7 +66,10 @@ spec:
         command: ["/bin/sh", "-c"]
         args:
           - |
-            apt-get update && apt-get install -y netcat-openbsd curl;
+            apt-get update && apt-get upgrade -y;
+            apt-get install -y netcat-openbsd curl;
+
+            echo "memory_limit = 512M" >> /usr/local/etc/php/conf.d/memory-limit.ini
 
             curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
             && chmod +x wp-cli.phar \
@@ -74,17 +77,17 @@ spec:
 
             until nc -z mariadb 3306; do echo "Waiting for database..."; sleep 3; done;
             mkdir -p /var/www/html;
-            cd /var/www/html;
-            if ! wp core is-installed --allow-root; then
+            if ! wp core is-installed --allow-root --path=/var/www/html; then
               echo "[========WP INSTALLATION STARTED========]";
               find /var/www/html/ -mindepth 1 -delete;
-              wp core download --allow-root;
-              wp core config --dbhost="$WORDPRESS_DB_HOST":3306 --dbname="$WORDPRESS_DB_NAME" --dbuser="$WORDPRESS_DB_USER" --dbpass="$WORDPRESS_DB_PASSWORD" --allow-root;
-              wp core install --url="http://localhost" --title="WordPress" --admin_user="$WORDPRESS_ADMIN_USER" --admin_password="$WORDPRESS_ADMIN_PASSWORD" --admin_email="$WORDPRESS_ADMIN_EMAIL" --allow-root;
-              wp theme install  twentytwentyfour --activate --allow-root;
+              wp core download --allow-root --path=/var/www/html;
+              wp config create --dbhost="$WORDPRESS_DB_HOST":3306 --dbname="$WORDPRESS_DB_NAME" --dbuser="$WORDPRESS_DB_USER" --dbpass="$WORDPRESS_DB_PASSWORD" --allow-root --path=/var/www/html;
+              wp core install --url="http://localhost" --title="WordPress" --admin_user="$WORDPRESS_ADMIN_USER" --admin_password="$WORDPRESS_ADMIN_PASSWORD" --admin_email="$WORDPRESS_ADMIN_EMAIL" --allow-root --path=/var/www/html;
+              wp theme install twentytwentyfour --activate --allow-root --path=/var/www/html;
             else
               echo "[========WP ALREADY INSTALLED========]";
             fi;
+            echo "ServerName localhost" >> /etc/apache2/apache2.conf;
             apache2-foreground;
       volumes:
       - name: wordpress-pv
