@@ -32,6 +32,12 @@ spec:
           mountPath: /etc/nginx/conf.d
         - name: nginx-certificates
           mountPath: /etc/nginx/certs
+        - name: nginx-config
+          mountPath: /etc/nginx/fastcgi_params
+          subPath: fastcgi_params
+        - name: wordpress-pv
+          mountPath: /var/www/wordpress
+          readOnly: true
         ports:
         - containerPort: 80
         - containerPort: 443
@@ -49,6 +55,9 @@ spec:
       - name: nginx-certificates
         persistentVolumeClaim:
           claimName: nginx-certificates-pvc
+      - name: wordpress-pv
+        persistentVolumeClaim:
+          claimName: wordpress-pvc
 ---
 apiVersion: v1
 kind: Service
