@@ -32,9 +32,6 @@ spec:
           mountPath: /etc/nginx/conf.d
         - name: nginx-certificates
           mountPath: /etc/nginx/certs
-        - name: nginx-config
-          mountPath: /etc/nginx/fastcgi_params
-          subPath: fastcgi_params
         - name: wordpress-pv
           mountPath: /var/www/wordpress
           readOnly: true

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wp-config
+data:
+  DB_HOST: mariadb
+  DOMAIN_NAME: localhost
+  WP_TITLE: WordPress Blog
