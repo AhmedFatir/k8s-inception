@@ -17,8 +17,7 @@ spec:
     spec:
       containers:
       - name: wordpress
-        image: afatirahmedfatir/wordpress:latest
-        imagePullPolicy: Always
+        image: afatirahmedfatir/wordpress:k8s
         env:
         - name: WORDPRESS_DB_HOST
           value: mariadb
@@ -55,7 +54,7 @@ spec:
         - name: DOMAIN_NAME
           value: "localhost"
         - name: WP_TITLE
-          value: "My WordPress Blog"
+          value: "WordPress Blog"
         ports:
         - containerPort: 9000
         volumeMounts:
