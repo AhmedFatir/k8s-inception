@@ -5,4 +5,4 @@ metadata:
 data:
   DB_HOST: mariadb
   DOMAIN_NAME: localhost
-  WP_TITLE: WordPress Blog
+  WP_TITLE: WordPress

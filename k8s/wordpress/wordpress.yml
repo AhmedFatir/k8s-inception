@@ -81,15 +81,3 @@ spec:
       - name: wordpress-pv
         persistentVolumeClaim:
           claimName: wordpress-pvc
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: wordpress
-spec:
-  selector:
-    app: wordpress
-  ports:
-  - port: 9000
-    targetPort: 9000
-  type: ClusterIP

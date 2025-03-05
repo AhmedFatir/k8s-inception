@@ -1,5 +1,5 @@
 all:
-	kubectl apply -Rf ./k8s
+	bash ./k8s/deploy.sh
 
 clean:
 	kubectl delete -Rf ./k8s
