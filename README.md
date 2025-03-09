@@ -24,8 +24,7 @@
                                 └─────────┘     └───────────┘     └─────────┘
 ```
 
-## Project Structure
-   
+## Project Structure   
 ### Deployments
 
 - **WordPress**: Defined in [k8s/Deployments/wordpress.yml](k8s/Deployments/wordpress.yml)
