@@ -4,10 +4,10 @@
 * The setup includes the necessary deployments, services, secrets, and persistent volume claims.
 
 ## Requirements
-
 * Kubernetes cluster (v1.19+)
 * kubectl CLI tool
 * Access to container registry (for custom images)
+
 ## Architecture
 
 ```
