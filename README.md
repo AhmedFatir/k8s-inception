@@ -1,5 +1,4 @@
 # k8s-inception
-
 * This project sets up a [**Kubernetes**](https://kubernetes.io/) environment to deploy a [**WordPress**](https://wordpress.org/) site with a [**MariaDB**](https://mariadb.org/) database and an [**Nginx**](https://nginx.org/) reverse proxy.
 * The setup includes the necessary deployments, services, secrets, and persistent volume claims.
 
@@ -26,32 +25,26 @@
 
 ## Project Structure   
 ### Deployments
-
 - **WordPress**: Defined in [k8s/Deployments/wordpress.yml](k8s/Deployments/wordpress.yml)
 - **Nginx**: Defined in [k8s/Deployments/nginx.yml](k8s/Deployments/nginx.yml)
 
 ### StatefulSets
-
 - **MariaDB**: Defined in [k8s/StatefulSets/maridb.yml](k8s/StatefulSets/maridb.yml)
 
 ### Services
-
 - **MariaDB Service**: Defined in [k8s/Services/mariadb-svc.yml](k8s/Services/mariadb-svc.yml)
 - **WordPress Service**: Defined in [k8s/Services/wordpress-svc.yml](k8s/Services/wordpress-svc.yml)
 - **Nginx Service**: Defined in [k8s/Services/nginx-svc.yml](k8s/Services/nginx-svc.yml)
 
 ### Environment Configurations
-
 - **MariaDB Secret**: Defined in [k8s/Env/mdb-secret.yml](k8s/Env/mdb-secret.yml)
 - **WordPress Secret**: Defined in [k8s/Env/wp-secret.yml](k8s/Env/wp-secret.yml)
 - **Nginx ConfigMap**: Defined in [k8s/Env/nginx-config.yml](k8s/Env/nginx-config.yml)
 
 ### Persistent Volume Claims
-
 - **MariaDB PVC**: Defined in [k8s/Volumes/mariadb-pvc.yml](k8s/Volumes/mariadb-pvc.yml)
 - **WordPress PVC**: Defined in [k8s/Volumes/wordpress-pvc.yml](k8s/Volumes/wordpress-pvc.yml)
 - **Nginx Certificates PVC**: Defined in [k8s/Volumes/nginx-pvc.yml](k8s/Volumes/nginx-pvc.yml)
-
 
 ## Makefile Commands
 * Deploy all resources
